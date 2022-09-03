@@ -1,0 +1,157 @@
+<template>
+  <div class="container">
+      <header>
+          <div>
+              <h2>Product List</h2>
+          </div>
+         <div class="btns-header">
+              <button class="btn"><router-link to="addproduct">ADD</router-link></button>
+              <button class="btn" id="delete-product-btn" value="MASS DELETE" @click="massDelete()">MASS DELETE</button>
+         </div>
+      </header>      
+      <div class="con">
+          <div class="card"  v-bind:key="objData.id" v-for="objData in products" >
+              <input type="checkbox" class="delete-checkbox" :id="objData.id">
+              <ul>
+                  <li>{{objData.sku}}</li>
+                  <li>{{objData.name}}</li>
+                  <li>{{objData.price}}$</li>
+                  <li>{{objData.front_end}}</li>
+
+              </ul>
+          </div>
+      </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import AddProduct from './AddProduct';
+export default {
+  name: 'ProductList',
+  components: {
+  AddProduct,
+},
+data() {
+  return {
+      products: [],
+      toDelete:[],
+      }
+},  
+methods: {
+    massDelete(){
+      let checks = document.getElementsByClassName("delete-checkbox");
+      for(let i=0;i<checks.length;i++){
+      if(checks[i].checked == true){
+          this.toDelete.push(checks[i].id);
+          }
+      }
+      var data = new FormData();
+      data.append("toDeleteArray", this.toDelete);
+      axios
+        .post(
+          "http://localhost/api/api.php?action=delete",data
+        ).then(res => {
+            if (res.data.error) {
+              console.log("Error", res);
+
+            } else {
+                this.getAllData();
+            }
+          })
+          .catch(err => {
+            console.log("Error", err);
+          });
+      },
+   getAllData(){
+         axios
+          .get('http://localhost/api/api.php?action=getAll')
+            .then(res => (this.products = res.data))
+            .catch(err => {
+              console.log("Error", err);
+            });
+            console
+      }
+  
+
+ 
+},
+mounted () {
+this.getAllData();
+},
+}
+</script>
+
+
+
+<style  scoped>
+.container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("images/background.jpeg");
+  background-position: center;
+  background-size: 300px;
+  background-repeat: no-repeat;
+}
+header{
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btns-header {
+  margin-right: 50px;
+  width: 20%;
+  display: flex;
+  justify-content: space-around;
+}
+.btn {
+  color: #fff;
+  border: none;
+  background-color: #e67e22;
+  padding: 5px;
+}
+.btn a {
+  text-decoration: none;
+  color: #fff;
+}
+/* .btn:hover {
+  transform: scale(.95);
+} */
+header h2 {
+  margin-left: 20px; 
+}
+
+ul {
+  list-style: none;
+}
+.con {
+  margin: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  position: relative;
+  width: 200px;
+  padding: 5px;
+  margin: 10px;
+  background-image: url("images/new2.webp");
+  background-position: bottom;
+  background-size: cover;
+  background-position-x: center;
+  background-repeat: no-repeat
+}
+
+.card ul {
+  margin-left: 50%;
+  margin-bottom: 10px;
+  transform: translateX(-70%);
+  text-align: center;
+  color: #fff;
+}
+
+
+
+</style>
