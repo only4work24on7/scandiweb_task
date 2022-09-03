@@ -64,17 +64,14 @@ if($action == 'getAll'){
     }
 }
 else if($action == 'addProduct'){
-   
-  
-    $attr = json_decode($_POST['attributes'],true); //array
-    $_POST['attributes'] = $attr;
-    $type = $_POST['type'];
-    $product = new $type();
-    $result = $product->productValidate();
-    if($result != 'succes'){
-        $res['errors'] = $result; 
-    }
-    // print_r($result);
+        $attr = json_decode($_POST['attributes'],true); //array
+        $_POST['attributes'] = $attr;
+        $type = $_POST['type'];
+        $product = new $type();
+        $result = $product->productValidate();
+        if($result != 'succes'){
+            $res['errors'] = $result; 
+        }
 }
 
 else if($action == 'delete'){
@@ -91,9 +88,14 @@ else if($action == 'getTypes'){
     $res = $types;
 }
 else if($action == 'getAttributes'){
-    $attr = ProductController::getAttributes($_GET['type_id']);
+
+
+
+        $attr = ProductController::getAttributes($_GET['type_id']);
+        // print_r($_GET['type_id']);
+        
+        $res = $attr;
     
-    $res = $attr;
 }
 
 header("Content-type: application/json");

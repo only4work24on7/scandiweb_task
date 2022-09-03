@@ -4,7 +4,7 @@ class DB
 {
     public static function connect(): PDO
     {
-        $connection = new PDO("mysql:host=localhost;dbname=store", "root", "");
+        $connection = new PDO("mysql:host=localhost;dbname=scandi", "root", "");
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $connection;
     }
