@@ -65,7 +65,7 @@ methods: {
       },
    getAllData(){
          axios
-          .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getAll')
+          .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getData')
             .then(res => (this.products = res.data))
             .catch(err => {
               console.log("Error", err);
