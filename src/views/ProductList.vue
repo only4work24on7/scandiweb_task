@@ -50,7 +50,7 @@ methods: {
       data.append("toDeleteArray", this.toDelete);
       axios
         .post(
-          "http://localhost/api/api.php?action=delete",data
+          "https://tight-laced-damages.000webhostapp.com/back_end/public/home/delete",data
         ).then(res => {
             if (res.data.error) {
               console.log("Error", res);
@@ -65,7 +65,7 @@ methods: {
       },
    getAllData(){
          axios
-          .get('http://localhost/api/api.php?action=getAll')
+          .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getAll')
             .then(res => (this.products = res.data))
             .catch(err => {
               console.log("Error", err);

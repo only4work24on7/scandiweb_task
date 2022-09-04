@@ -83,7 +83,7 @@ export default {
                           data.append(this.attributes[key].name,this.attributes[key].value);
                       }
                   axios
-                  .post('http://localhost/api/api.php?action=addProduct',data)
+                  .post('https://tight-laced-damages.000webhostapp.com/back_end/public/home/addProduct',data)
                   .then(res => { 
                       if(res.data.errors){
                           this.errors = res.data.errors;
@@ -100,7 +100,7 @@ export default {
               let type_id = event.target.value;
               this.type_value = event.target.options[event.target.options.selectedIndex].text;
               axios
-              .get('http://localhost/api/api.php?action=getAttributes&type_id='+type_id)
+              .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getAttributes&type_id='+type_id)
               .then(res =>{
                   (this.attributes = res.data)
                   })
@@ -113,7 +113,7 @@ export default {
   {
       // this.getTypes();          
               axios
-              .get('http://localhost/api/api.php?action=getTypes')
+              .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getTypes')
               .then(res => {
                   this.types = res.data;
               })
