@@ -34,7 +34,7 @@
 
                 <div>
                     <select v-model="type" name="type" id="productType" @change="getAttributes($event)" >
-                            <option disabled selected>type</option>
+                            <option disabled value="0" selected>type</option>
                             <option :key="item.id" v-for="item in types" :value="item.id" :id="item.name" >{{item.name}}</option>
                     </select>
                 </div>
@@ -52,88 +52,83 @@
 
 
 
+
 <script>
 import axios from 'axios';
 
 export default {
-    name: "AddProduct",
-    data(){
-        return {
-            name:'',
-            sku:'',
-            price: '',
-           
-            type: 'type',
-            errors: [],
-            attributes: [],
-            type_value: '',
-            types: [],
-            err: []
-            }
-            
-        },
-    methods: { 
-            back(){
-                    this.$router.push("/");
-                },
-            addProduct(){
-                    var data = new FormData();
-                    data.append("sku", this.sku);
-                    data.append("name", this.name);
-                    data.append("price", this.price);
-                    data.append("type", this.type_value);
-                    data.append("attributes", JSON.stringify(this.attributes));
-                    for (const key in this.attributes) {
-                            data.append(this.attributes[key].name,this.attributes[key].value);
-                        }
-                    if(this.attributes.length == 0){
-                        this.errors = [];
-                         this.errors.push("pleace select type");
-                    }else
-                    axios
-                    .post('https://tight-laced-damages.000webhostapp.com/back_end/public/home/addProduct/',data)
-                    .then(res => { 
-                        console.log(res.data.errors)
-                        if(res.data.errors){
-                            this.errors = res.data.errors;
-                            //comment
-                        }else{
-                                this.back();
-                        }
-                         
-                    })
-                    .catch(err => (this.err = err.data))
-                   
- 
-
-            }
-            ,getAttributes(event){
-                this.type_value = event.target.options[event.target.options.selectedIndex].text;
-                let type_id = event.target.value;
-                axios
-                .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getAttributes/?type_id='+type_id)
-                .then(res =>{
-                    (this.attributes = res.data)
-                    })
-                .catch(err => {console.log("Error", err);});
-                    
-            }
+  name: "AddProduct",
+  data(){
+      return {
+          name:'',
+          sku:'',
+          price: '',
+          type: '0',
+          errors: [],
+          attributes: [],
+          type_value: 'Type',
+          types: [],
+          err: []
+          }
           
+      },
+  methods: { 
+          back(){
+                  this.$router.push("/");
+              },
+          addProduct(){
+                  var data = new FormData();
+                  data.append("sku", this.sku);
+                  data.append("name", this.name);
+                  data.append("price", this.price);
+                  data.append("type", this.type_value);
+                  data.append("attributes", JSON.stringify(this.attributes));
+                  for (const key in this.attributes) {
+                          data.append(this.attributes[key].name,this.attributes[key].value);
+                      }
+                  axios
+                  .post('https://tight-laced-damages.000webhostapp.com/back_end/public/home/addProduct',data)
+                  .then(res => { 
+                      if(res.data.errors){
+                          this.errors = res.data.errors;
+                      }else{
+                          this.back();
+                      }
+                  })
+                  .catch(err => (this.err = err.data))
+              
 
-    },mounted()
-    {        
-                axios
-                .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getTypes')
-                .then(res => {
-                    this.types = res.data;
-                })
-                .catch(err => {console.log("Error", err);});
 
-          
+          }
+          ,getAttributes(event){
+              let type_id = event.target.value;
+              this.type_value = event.target.options[event.target.options.selectedIndex].text;
+              axios
+              .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getAttributes&type_id='+type_id)
+              .then(res =>{
+                  (this.attributes = res.data)
+                  })
+              .catch(err => {console.log("Error", err);});
+                  
+          }
         
 
-    }
+  },mounted()
+  {
+      // this.getTypes();          
+              axios
+              .get('https://tight-laced-damages.000webhostapp.com/back_end/public/home/getTypes')
+              .then(res => {
+                  this.types = res.data;
+              })
+              .catch(err => {console.log("Error", err);});
+
+        
+      
+
+  }
 }
+
 </script>
 
 

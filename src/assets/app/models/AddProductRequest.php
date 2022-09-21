@@ -14,6 +14,8 @@ class AddProductRequest implements Validation
     public static function digits($attr,$args){
         if(!empty($_POST[$attr]) && !is_numeric($_POST[$attr])){
             self::$errors[] = $attr.' must be number';
+        }elseif (!empty($_POST[$attr]) && $_POST[$attr] < 0) {
+            self::$errors[] = $attr.' must be a valid number ';
         }
     }
     public static function unique($attr, $args){
