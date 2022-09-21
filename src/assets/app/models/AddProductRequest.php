@@ -1,17 +1,10 @@
 <?php
-require_once "Validation.php";
-// require_once './DB.php';
-
 
 class AddProductRequest implements Validation
 {
     private static $errors = []; 
 
-    public static function TypeR($attr,$args){
-        if(empty($_POST[$attr]) || $_POST[$attr] == 'Type'){
-            self::$errors[] = $attr.' is required';
-        }
-    }
+
 
     public static function required($attr,$args){
         if(empty($_POST[$attr]) || $_POST[$attr] == 'undifiend'){
@@ -29,6 +22,7 @@ class AddProductRequest implements Validation
             self::$errors[] = $attr.' that you entered is already exist';
         }
     }
+
 
     // Custom validation rules
 

@@ -1,5 +1,9 @@
 <?php
-class Type extends ProductController
+
+
+
+
+class Book extends ProductController
 {
     public static $errors = [];
 
@@ -19,14 +23,24 @@ class Type extends ProductController
             ],
             'type' => [
                 'required' => [],
-                'TypeR' => [],
+            ],
+            'weight' => [
+                'required' => [],
+                'digits' => [],
             ],
         ]);
-        if (!count(AddProductRequest::getErrors()) == 0) {
-            $errors = AddProductRequest::getErrors();
-            // $e = json_encode($errors,JSON_FORCE_OBJECT);
-            return $errors;
+        if (count(AddProductRequest::getErrors()) == 0) {
+            $_POST['front_end'] = $this->front_end($_POST['attributes']);
+            $product = new Product($_POST);
+            $product->add();
+            return true;
+        } else {
+            return AddProductRequest::getErrors();
         }
     }
 }
+
+
+
+
 ?>
